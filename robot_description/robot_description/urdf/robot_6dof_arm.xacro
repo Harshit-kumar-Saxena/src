@@ -1,8 +1,6 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="robot_6dof_arm">
 
-
-
 <material name="Grey"><color rgba="0.5 0.5 0.5 1.0"/></material>
 <material name="Blue"><color rgba="0.0 0.0 1.0 1.0"/></material>
 <material name="Green"><color rgba="0.0 1.0 0.0 1.0"/></material>
@@ -13,6 +11,72 @@
 <material name="Black"><color rgba="0.0 0.0 0.0 1.0"/></material>
 <material name="White"><color rgba="1.0 1.0 1.0 1.0"/></material>
 
+<!-- Example transmission (repeat for each joint) -->
+<transmission name="joint1_trans">
+  <type>transmission_interface/SimpleTransmission</type>
+  <actuator name="joint1_motor"/>
+  <joint name="base_link_link1"/>
+</transmission>
+
+<transmission name="joint2_trans">
+  <type>transmission_interface/SimpleTransmission</type>
+  <actuator name="joint2_motor"/>
+  <joint name="link1_link2"/>
+</transmission>
+
+<transmission name="joint3_trans">
+  <type>transmission_interface/SimpleTransmission</type>
+  <actuator name="joint3_motor"/>
+  <joint name="link2_link3"/>
+</transmission>
+
+<transmission name="joint4_trans">
+  <type>transmission_interface/SimpleTransmission</type>
+  <actuator name="joint4_motor"/>
+  <joint name="link3_link4"/>
+</transmission>
+
+<transmission name="joint5_trans">
+  <type>transmission_interface/SimpleTransmission</type>
+  <actuator name="joint5_motor"/>
+  <joint name="link4_link5"/>
+</transmission>
+
+<!--End effector-->
+
+<transmission name="joint6_trans">
+  <type>transmission_interface/SimpleTransmission</type>
+  <actuator name="joint6_motor"/>
+  <joint name="link5_tcp_connector"/>
+</transmission>
+
+<transmission name="joint7_trans">
+  <type>transmission_interface/SimpleTransmission</type>
+  <actuator name="joint7_motor"/>
+  <joint name="tcp_connector_gripper_right"/>
+</transmission>
+
+<transmission name="joint8_trans">
+  <type>transmission_interface/SimpleTransmission</type>
+  <actuator name="joint8_motor"/>
+  <joint name="tcp_connector_gripper_left"/>
+</transmission>
+
+<plugin name="ros2_control_node" filename="libros2_control_node.so">
+  <ros2_control>
+    <hardware>ros2_control_test_hardware/ActuatorHardware</hardware>
+    <joints>
+      <joint name="base_link_link1"/>
+      <joint name="link1_link2"/>
+      <joint name="link2_link3"/>
+      <joint name="link3_link4"/>
+      <joint name="link4_link5"/>
+      <joint name="link5_tcp_connector"/>
+      <joint name="tcp_connector_gripper_right"/>
+      <joint name="tcp_connector_gripper_left"/>
+    </joints>
+  </ros2_control>
+</plugin>
 
     <!-- Links -->
     <link name="base_link">
@@ -31,8 +95,9 @@
         </collision>
         <inertial>
             <origin xyz="0 0 0" rpy="0 0 0"/>
-            <mass value="1.0"/>
-            <inertia ixx="0.01" ixy="0.0" ixz="0.0" iyy="0.01" iyz="0.0" izz="0.01"/>
+            <mass value="5.0"/>
+            <!-- cylinder inertia (r=0.1, L=0.05) -->
+            <inertia ixx="0.013542" ixy="0.0" ixz="0.0" iyy="0.013542" iyz="0.0" izz="0.025000"/>
         </inertial>
     </link>
 
@@ -52,9 +117,10 @@
         </collision>
         <inertial>
             <origin xyz="0 0 0" rpy="0 0 0"/>
-            <mass value="1.0"/>
-            <inertia ixx="0.01" ixy="0.0" ixz="0.0" iyy="0.01" iyz="0.0" izz="0.01"/>
-            </inertial>
+            <mass value="2.0"/>
+            <!-- cylinder inertia (r=0.05, L=0.264) -->
+            <inertia ixx="0.012866" ixy="0.0" ixz="0.0" iyy="0.012866" iyz="0.0" izz="0.002500"/>
+        </inertial>
     </link>
 
     <joint name="base_link_link1" type="revolute">
@@ -81,8 +147,9 @@
         </collision>
         <inertial>
             <origin xyz="0 0 0" rpy="0 0 0"/>
-            <mass value="1.0"/>
-            <inertia ixx="0.01" ixy="0.0" ixz="0.0" iyy="0.01" iyz="0.0" izz="0.01"/>
+            <mass value="3.0"/>
+            <!-- cylinder inertia (r=0.05, L=0.85) -->
+            <inertia ixx="0.182500" ixy="0.0" ixz="0.0" iyy="0.182500" iyz="0.0" izz="0.003750"/>
         </inertial>
     </link>
 
@@ -110,8 +177,9 @@
         </collision>
         <inertial>
             <origin xyz="0 0 0" rpy="0 0 0"/>
-            <mass value="1.0"/>
-            <inertia ixx="0.01" ixy="0.0" ixz="0.0" iyy="0.01" iyz="0.0" izz="0.01"/>
+            <mass value="2.5"/>
+            <!-- cylinder inertia (r=0.05, L=0.68) -->
+            <inertia ixx="0.097896" ixy="0.0" ixz="0.0" iyy="0.097896" iyz="0.0" izz="0.003125"/>
         </inertial>
     </link>
 
@@ -139,8 +207,9 @@
         </collision>
         <inertial>
             <origin xyz="0 0 0" rpy="0 0 0"/>
-            <mass value="1.0"/>
-            <inertia ixx="0.01" ixy="0.0" ixz="0.0" iyy="0.01" iyz="0.0" izz="0.01"/>
+            <mass value="1.5"/>
+            <!-- cylinder inertia (r=0.05, L=0.13) -->
+            <inertia ixx="0.003050" ixy="0.0" ixz="0.0" iyy="0.003050" iyz="0.0" izz="0.001875"/>
         </inertial>
     </link>
 
@@ -169,7 +238,8 @@
         <inertial>
             <origin xyz="0 0 0" rpy="0 0 0"/>
             <mass value="1.0"/>
-            <inertia ixx="0.01" ixy="0.0" ixz="0.0" iyy="0.01" iyz="0.0" izz="0.01"/>
+            <!-- cylinder inertia (r=0.05, L=0.17) -->
+            <inertia ixx="0.003033" ixy="0.0" ixz="0.0" iyy="0.003033" iyz="0.0" izz="0.001250"/>
         </inertial>
     </link>
     <joint name="link4_link5" type="revolute">
@@ -196,8 +266,9 @@
         </collision>
         <inertial>
             <origin xyz="0 0 0" rpy="0 0 0"/>
-            <mass value="1.0"/>
-            <inertia ixx="0.01" ixy="0.0" ixz="0.0" iyy="0.01" iyz="0.0" izz="0.01"/>
+            <mass value="0.5"/>
+            <!-- box inertia (0.03 x 0.15 x 0.03) -->
+            <inertia ixx="0.000975" ixy="0.0" ixz="0.0" iyy="0.000075" iyz="0.0" izz="0.000975"/>
         </inertial>
     </link>
     <joint name="link5_tcp_connector" type="revolute">
@@ -224,8 +295,9 @@
         </collision>
         <inertial>
             <origin xyz="0 0 0" rpy="0 0 0"/>
-            <mass value="1.0"/>
-            <inertia ixx="0.01" ixy="0.0" ixz="0.0" iyy="0.01" iyz="0.0" izz="0.01"/>
+            <mass value="0.2"/>
+            <!-- box inertia (0.01 x 0.01 x 0.1) -->
+            <inertia ixx="0.000168" ixy="0.0" ixz="0.0" iyy="0.000168" iyz="0.0" izz="0.000003"/>
         </inertial>
     </link>
 
@@ -253,8 +325,8 @@
         </collision>
         <inertial>
             <origin xyz="0 0 0" rpy="0 0 0"/>
-            <mass value="1.0"/>
-            <inertia ixx="0.01" ixy="0.0" ixz="0.0" iyy="0.01" iyz="0.0" izz="0.01"/>
+            <mass value="0.2"/>
+            <inertia ixx="0.000168" ixy="0.0" ixz="0.0" iyy="0.000168" iyz="0.0" izz="0.000003"/>
         </inertial>
     </link>
 
@@ -264,6 +336,13 @@
         <origin xyz="0.0 0.065 0.03" rpy="0 0 0"/>
         <axis xyz="0 1 0"/>
         <limit lower="0.0" upper="0.055" effort="0.5" velocity="1000.0"/>
+    </joint>
+    
+    <link name="world"/>
+
+    <joint name="fixed_base_joint" type="fixed">
+        <parent link="world"/>
+        <child link="base_link"/>
     </joint>
 
 </robot>
