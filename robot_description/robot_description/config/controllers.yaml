@@ -1,0 +1,56 @@
+controller_manager:
+  ros__parameters:
+    update_rate: 10  # Hz
+
+    joint_state_broadcaster:
+      type: joint_state_broadcaster/JointStateBroadcaster
+
+    arm_controller:
+      type: joint_trajectory_controllers/JointTrajectoryController
+      
+    gripper_controller:
+      type: joint_trajectory_controllers/JointTrajectoryController
+
+    arm_controller:
+      ros__parameters:
+        joints:
+          - base_link_link1
+          - link1_link2
+          - link2_link3
+          - link3_link4
+          - link4_link5
+          - link5_tcp_connector
+        gains:
+          base_link_link1: {p: 100.0, d: 0.1, i: 0.0}
+          link1_link2: {p: 100.0, d: 0.1, i: 0.0}
+          link2_link3: {p: 100.0, d: 0.1, i: 0.0}
+          link3_link4: {p: 100.0, d: 0.1, i: 0.0}
+          link4_link5: {p: 100.0, d: 0.1, i: 0.0}
+          link5_tcp_connector: {p: 100.0, d: 0.1, i: 0.0}
+
+        command_interface:
+          - position
+        state_interface:
+          - position
+  
+        
+        open_loop_control: true
+        allow_integration_in_goal_trajectory: true
+
+    gripper_controller:
+      type: joint_trajectory_controllers/JointTrajectoryController
+      ros__parameters:
+        joints:
+          - tcp_connector_gripper_right
+          - tcp_connector_gripper_left    
+        gains:
+          tcp_connector_gripper_right: {p: 50.0, d: 0.1, i: 0.0}
+          tcp_connector_gripper_left: {p: 50.0, d: 0.1, i: 0.0}
+        
+        command_interface:
+          - position
+        state_interface:
+          - position
+          - velocity
+        
+        open_loop_control: true

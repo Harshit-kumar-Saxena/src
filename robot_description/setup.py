@@ -19,11 +19,11 @@ setup(
 
         # URDF / Xacro files
         (os.path.join('share', package_name, 'urdf'),
-         glob('robot_description/urdf/*.xacro')),
+        glob('robot_description/urdf/*.xacro')),
 
         # Config files (optional)
         (os.path.join('share', package_name, 'config'),
-         glob('robot_description/config/*')),
+         glob('robot_description/config/*.yaml')),
     ],
     install_requires=['setuptools'],
     zip_safe=True,

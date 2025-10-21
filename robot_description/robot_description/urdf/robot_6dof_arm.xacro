@@ -1,82 +1,152 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="robot_6dof_arm">
 
-<material name="Grey"><color rgba="0.5 0.5 0.5 1.0"/></material>
-<material name="Blue"><color rgba="0.0 0.0 1.0 1.0"/></material>
-<material name="Green"><color rgba="0.0 1.0 0.0 1.0"/></material>
-<material name="Red"><color rgba="1.0 0.0 0.0 1.0"/></material>
-<material name="Yellow"><color rgba="1.0 1.0 0.0 1.0"/></material>
-<material name="Cyan"><color rgba="0.0 1.0 1.0 1.0"/></material>
-<material name="Magenta"><color rgba="1.0 0.0 1.0 1.0"/></material>
-<material name="Black"><color rgba="0.0 0.0 0.0 1.0"/></material>
-<material name="White"><color rgba="1.0 1.0 1.0 1.0"/></material>
+    <material name="Grey"><color rgba="0.5 0.5 0.5 1.0"/></material>
+    <material name="Blue"><color rgba="0.0 0.0 1.0 1.0"/></material>
+    <material name="Green"><color rgba="0.0 1.0 0.0 1.0"/></material>
+    <material name="Red"><color rgba="1.0 0.0 0.0 1.0"/></material>
+    <material name="Yellow"><color rgba="1.0 1.0 0.0 1.0"/></material>
+    <material name="Cyan"><color rgba="0.0 1.0 1.0 1.0"/></material>
+    <material name="Magenta"><color rgba="1.0 0.0 1.0 1.0"/></material>
+    <material name="Black"><color rgba="0.0 0.0 0.0 1.0"/></material>
+    <material name="White"><color rgba="1.0 1.0 1.0 1.0"/></material>
 
-<!-- Example transmission (repeat for each joint) -->
-<transmission name="joint1_trans">
-  <type>transmission_interface/SimpleTransmission</type>
-  <actuator name="joint1_motor"/>
-  <joint name="base_link_link1"/>
-</transmission>
+    <!-- Example transmission (repeat for each joint) -->
+    <transmission name="joint1_trans">
+    <type>transmission_interface/SimpleTransmission</type>
+    <actuator name="joint1_motor"/>
+    <joint name="base_link_link1"/>
+    </transmission>
 
-<transmission name="joint2_trans">
-  <type>transmission_interface/SimpleTransmission</type>
-  <actuator name="joint2_motor"/>
-  <joint name="link1_link2"/>
-</transmission>
+    <transmission name="joint2_trans">
+    <type>transmission_interface/SimpleTransmission</type>
+    <actuator name="joint2_motor"/>
+    <joint name="link1_link2"/>
+    </transmission>
 
-<transmission name="joint3_trans">
-  <type>transmission_interface/SimpleTransmission</type>
-  <actuator name="joint3_motor"/>
-  <joint name="link2_link3"/>
-</transmission>
+    <transmission name="joint3_trans">
+    <type>transmission_interface/SimpleTransmission</type>
+    <actuator name="joint3_motor"/>
+    <joint name="link2_link3"/>
+    </transmission>
 
-<transmission name="joint4_trans">
-  <type>transmission_interface/SimpleTransmission</type>
-  <actuator name="joint4_motor"/>
-  <joint name="link3_link4"/>
-</transmission>
+    <transmission name="joint4_trans">
+    <type>transmission_interface/SimpleTransmission</type>
+    <actuator name="joint4_motor"/>
+    <joint name="link3_link4"/>
+    </transmission>
 
-<transmission name="joint5_trans">
-  <type>transmission_interface/SimpleTransmission</type>
-  <actuator name="joint5_motor"/>
-  <joint name="link4_link5"/>
-</transmission>
+    <transmission name="joint5_trans">
+    <type>transmission_interface/SimpleTransmission</type>
+    <actuator name="joint5_motor"/>
+    <joint name="link4_link5"/>
+    </transmission>
 
-<!--End effector-->
+    <!--End effector-->
 
-<transmission name="joint6_trans">
-  <type>transmission_interface/SimpleTransmission</type>
-  <actuator name="joint6_motor"/>
-  <joint name="link5_tcp_connector"/>
-</transmission>
+    <transmission name="joint6_trans">
+    <type>transmission_interface/SimpleTransmission</type>
+    <actuator name="joint6_motor"/>
+    <joint name="link5_tcp_connector"/>
+    </transmission>
 
-<transmission name="joint7_trans">
-  <type>transmission_interface/SimpleTransmission</type>
-  <actuator name="joint7_motor"/>
-  <joint name="tcp_connector_gripper_right"/>
-</transmission>
+    <transmission name="joint7_trans">
+    <type>transmission_interface/SimpleTransmission</type>
+    <actuator name="joint7_motor"/>
+    <joint name="tcp_connector_gripper_right"/>
+    </transmission>
 
-<transmission name="joint8_trans">
-  <type>transmission_interface/SimpleTransmission</type>
-  <actuator name="joint8_motor"/>
-  <joint name="tcp_connector_gripper_left"/>
-</transmission>
+    <transmission name="joint8_trans">
+    <type>transmission_interface/SimpleTransmission</type>
+    <actuator name="joint8_motor"/>
+    <joint name="tcp_connector_gripper_left"/>
+    </transmission>
 
-<plugin name="ros2_control_node" filename="libros2_control_node.so">
-  <ros2_control>
-    <hardware>ros2_control_test_hardware/ActuatorHardware</hardware>
-    <joints>
-      <joint name="base_link_link1"/>
-      <joint name="link1_link2"/>
-      <joint name="link2_link3"/>
-      <joint name="link3_link4"/>
-      <joint name="link4_link5"/>
-      <joint name="link5_tcp_connector"/>
-      <joint name="tcp_connector_gripper_right"/>
-      <joint name="tcp_connector_gripper_left"/>
-    </joints>
-  </ros2_control>
-</plugin>
+    <gazebo>
+        <plugin filename="ign_ros2_control-system" name="ign_ros2_control::IgnitionROS2ControlPlugin">
+            <parameters>$(find robot_description)/config/controllers.yaml</parameters>
+            <controller_manager_prefix_node_name>controller_manager</controller_manager_prefix_node_name>
+        </plugin>
+    </gazebo>
+
+    <ros2_control name="IgnitionSystem" type="system">
+        <hardware>
+            <plugin>ign_ros2_control/IgnitionSystem</plugin>
+        </hardware>
+
+        <joint name="base_link_link1">
+            <command_interface name="position">
+                <param name="min">-1.57</param>
+                <param name="max">1.57</param>
+            </command_interface>
+            <state_interface name="position"/>
+            <state_interface name="velocity"/>
+            <param name="initial_position">0.0</param>
+        </joint>
+        <joint name="link1_link2">
+            <command_interface name="position">
+                <param name="min">-1.57</param>
+                <param name="max">1.57</param>
+            </command_interface>
+            <state_interface name="position"/>
+            <state_interface name="velocity"/>
+            
+        </joint>
+        <joint name="link2_link3">
+            <command_interface name="position">
+                <param name="min">-1.57</param>
+                <param name="max">1.57</param>
+            </command_interface>
+            <state_interface name="position"/>
+            <state_interface name="velocity"/>
+           
+        </joint>
+        <joint name="link3_link4">
+            <command_interface name="position">
+                <param name="min">-1.57</param>
+                <param name="max">1.57</param>
+            </command_interface>
+            <state_interface name="position"/>
+            <state_interface name="velocity"/>
+            
+        </joint>
+        <joint name="link4_link5">
+            <command_interface name="position">
+                <param name="min">-1.57</param>
+                <param name="max">1.57</param>
+            </command_interface>
+            <state_interface name="position"/>
+            <state_interface name="velocity"/>
+            
+        </joint>
+        <joint name="link5_tcp_connector">
+             <command_interface name="position">
+                <param name="min">-1.57</param>
+                <param name="max">1.57</param>
+            </command_interface>
+             <state_interface name="position"/>
+             <state_interface name="velocity"/>
+             
+        </joint>
+        <joint name="tcp_connector_gripper_right">
+            <command_interface name="position">
+                <param name="min">-1.57</param>
+                <param name="max">1.57</param>
+            </command_interface>
+            <state_interface name="position"/>
+            <state_interface name="velocity"/>
+            
+        </joint>
+        <joint name="tcp_connector_gripper_left">
+            <command_interface name="position">
+                <param name="min">-1.57</param>
+                <param name="max">1.57</param>
+            </command_interface>
+            <state_interface name="position"/>
+            <state_interface name="velocity"/>
+            
+        </joint>
+    </ros2_control>
 
     <!-- Links -->
     <link name="base_link">

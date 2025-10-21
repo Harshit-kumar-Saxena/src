@@ -1,0 +1,68 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="robot_6dof_arm">
+
+  <!-- Include the 6DOF arm -->
+  <xacro:include filename="$(find robot_description)/urdf/robot_6dof_arm.xacro"/>
+
+  <xacro:robot_6dof_arm/>
+
+  <!-- ROS2 Control -->
+  <ros2_control name="robot_hw" type="system">
+    <hardware>
+      <plugin>gazebo_ros2_control/GazeboSystem</plugin>
+
+    </hardware>
+
+    <joint name="base_link_link1">
+      <command_interface name="position"/>
+      <state_interface name="position"/>
+    </joint>
+
+    <joint name="link1_link2">
+      <command_interface name="position"/>
+      <state_interface name="position"/>
+    </joint>
+
+    <joint name="link2_link3">
+      <command_interface name="position"/>
+      <state_interface name="position"/>
+    </joint>
+
+    <joint name="link3_link4">
+      <command_interface name="position"/>
+      <state_interface name="position"/>
+    </joint>
+
+    <joint name="link4_link5">
+      <command_interface name="position"/>
+      <state_interface name="position"/>
+    </joint>
+
+    <joint name="link5_tcp_connector">
+      <command_interface name="position"/>
+      <state_interface name="position"/>
+    </joint>
+
+    <joint name="tcp_connector_gripper_right">
+      <command_interface name="position"/>
+      <state_interface name="position"/>
+    </joint>
+
+    <joint name="tcp_connector_gripper_left">
+      <command_interface name="position"/>
+      <state_interface name="position"/>
+    </joint>
+  </ros2_control>
+
+  <!-- Gazebo plugin -->
+  <gazebo>
+    <plugin name="gazebo_ros2_control" filename="libgazebo_ros2_control.so">
+      <ros>
+        <namespace>/</namespace>
+      </ros>
+      <robot_param>robot_description</robot_param>
+      <parameters>$(find robot_description)/robot_description/config/controllers.yaml</parameters>
+    </plugin>
+  </gazebo>
+
+</robot>
