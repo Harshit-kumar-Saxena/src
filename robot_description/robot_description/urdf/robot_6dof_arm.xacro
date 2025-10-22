@@ -63,15 +63,18 @@
     </transmission>
 
     <gazebo>
-        <plugin filename="ign_ros2_control-system" name="ign_ros2_control::IgnitionROS2ControlPlugin">
+        <initial_position xyz="0 0 0"/>
+        <plugin filename="gz_ros2_control-system"
+                name="gz_ros2_control::GazeboSimROS2ControlPlugin">
             <parameters>$(find robot_description)/config/controllers.yaml</parameters>
-            <controller_manager_prefix_node_name>controller_manager</controller_manager_prefix_node_name>
         </plugin>
     </gazebo>
 
+
+
     <ros2_control name="IgnitionSystem" type="system">
         <hardware>
-            <plugin>ign_ros2_control/IgnitionSystem</plugin>
+            <plugin>gz_ros2_control/GazeboSimSystem</plugin>
         </hardware>
 
         <joint name="base_link_link1">
@@ -130,8 +133,8 @@
         </joint>
         <joint name="tcp_connector_gripper_right">
             <command_interface name="position">
-                <param name="min">-1.57</param>
-                <param name="max">1.57</param>
+                <param name="min">0.0</param>
+                <param name="max">0.055</param>
             </command_interface>
             <state_interface name="position"/>
             <state_interface name="velocity"/>
@@ -139,8 +142,8 @@
         </joint>
         <joint name="tcp_connector_gripper_left">
             <command_interface name="position">
-                <param name="min">-1.57</param>
-                <param name="max">1.57</param>
+                <param name="min">-0.055</param>
+                <param name="max">0.0</param>
             </command_interface>
             <state_interface name="position"/>
             <state_interface name="velocity"/>
@@ -198,7 +201,7 @@
         <child link="link_1"/>
         <origin xyz="0.0 0.0 0.05" rpy="0 0 0"/>
         <axis xyz="0 0 1"/>
-        <limit lower="-3.14159" upper="3.14159" effort="0.5" velocity="1000.0"/>  
+        <limit lower="-3.14159" upper="3.14159" effort="50.0" velocity="1000.0"/>  
     </joint>
 
     <link name="link_2">
@@ -228,7 +231,7 @@
         <child link="link_2"/>
         <origin xyz="0.0 0.1 0.214" rpy="0 0 0"/>
         <axis xyz="0 1 0"/>
-        <limit lower="-2.50" upper="2.50" effort="0.5" velocity="1000.0"/>    
+        <limit lower="-2.50" upper="2.50" effort="50.0" velocity="1000.0"/>    
     </joint>
 
     <link name="link_3">
@@ -258,7 +261,7 @@
         <child link="link_3"/>
         <origin xyz="0.0 -0.1 0.8" rpy="0 0 0"/>
         <axis xyz="0 1 0"/>
-        <limit lower="-3.14" upper="3.14" effort="0.5" velocity="1000.0"/>
+        <limit lower="-3.14" upper="3.14" effort="50.0" velocity="1000.0"/>
     </joint>
 
     <link name="link_4">
@@ -288,7 +291,7 @@
         <child link="link_4"/>
         <origin xyz="0.0 0.1 0.630" rpy="0 0 0"/>
         <axis xyz="0 1 0"/>
-        <limit lower="-3.14" upper="3.14" effort="0.5" velocity="1000.0"/>
+        <limit lower="-3.14" upper="3.14" effort="50.0" velocity="1000.0"/>
     </joint>
 
     <link name="link_5">
@@ -317,7 +320,7 @@
         <child link="link_5"/>
         <origin xyz="0.0 0.0 0.180" rpy="0 1.57 0"/>
         <axis xyz="1 0 0"/>
-        <limit lower="-3.14" upper="3.14" effort="0.5" velocity="1000.0"/>
+        <limit lower="-3.14" upper="3.14" effort="50.0" velocity="1000.0"/>
     </joint>
     <!--build the TCP or end effector-->
     <link name="tcp_connector">
@@ -346,7 +349,7 @@
         <child link="tcp_connector"/>
         <origin xyz="0.0 0.0 0.120" rpy="0 0 0"/>
         <axis xyz="0 0 1"/>
-        <limit lower="-3.14" upper="3.14" effort="0.5" velocity="1000.0"/>
+        <limit lower="-3.14" upper="3.14" effort="50.0" velocity="1000.0"/>
     </joint>
 
     <link name="gripper_right">
@@ -376,7 +379,7 @@
         <child link="gripper_right"/>
         <origin xyz="0.0 -0.065 0.03" rpy="0 0 0"/>
         <axis xyz="0 1 0"/>
-        <limit lower="0.0" upper="0.055" effort="0.5" velocity="1000.0"/>
+        <limit lower="0.0" upper="0.055" effort="50.0" velocity="1000.0"/>
     </joint>
 
     <link name="gripper_left">
@@ -405,7 +408,7 @@
         <child link="gripper_left"/>
         <origin xyz="0.0 0.065 0.03" rpy="0 0 0"/>
         <axis xyz="0 1 0"/>
-        <limit lower="0.0" upper="0.055" effort="0.5" velocity="1000.0"/>
+        <limit lower="-0.055" upper="0.0" effort="50.0" velocity="1000.0"/>
     </joint>
     
     <link name="world"/>
