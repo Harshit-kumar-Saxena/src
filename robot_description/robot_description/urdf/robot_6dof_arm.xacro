@@ -1,5 +1,19 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="robot_6dof_arm">
+<xacro:include filename="$(find robot_description)/urdf/overhead_camera.xacro"/>
+
+<!-- Instantiate the overhead camera macro -->
+<xacro:overhead_camera
+prefix="overhead"
+x="0.0"
+y="0.0"
+z="1.5"
+roll="0.0"
+pitch="-1.5708"
+yaw="0.0"
+topic="/overhead_camera/image_raw"
+/>
+
 
     <material name="Grey"><color rgba="0.5 0.5 0.5 1.0"/></material>
     <material name="Blue"><color rgba="0.0 0.0 1.0 1.0"/></material>
