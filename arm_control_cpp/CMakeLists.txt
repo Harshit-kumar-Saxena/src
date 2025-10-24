@@ -14,21 +14,21 @@ find_package(control_msgs REQUIRED)
 find_package(sensor_msgs REQUIRED)
 
 # Add your executable
-add_executable(send_trajectory src/send_trajectory.cpp)
+# add_executable(send_trajectory src/send_trajectory.cpp)
 
 # Link dependencies
-ament_target_dependencies(send_trajectory
-  rclcpp
-  std_msgs
-  trajectory_msgs
-  control_msgs
-  sensor_msgs
-)
+# ament_target_dependencies(send_trajectory
+#   rclcpp
+#   std_msgs
+#   trajectory_msgs
+#   control_msgs
+#   sensor_msgs
+# )
 
-# Install the executable
-install(TARGETS
-  send_trajectory
-  DESTINATION lib/${PROJECT_NAME}
-)
+# # Install the executable
+# install(TARGETS
+#   send_trajectory
+#   DESTINATION lib/${PROJECT_NAME}
+# )
 
 ament_package()

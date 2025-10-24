@@ -1,19 +1,19 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="robot_6dof_arm">
-<xacro:include filename="$(find robot_description)/urdf/overhead_camera.xacro"/>
+    <xacro:include filename="overhead_camera.xacro"/>
 
-<!-- Instantiate the overhead camera macro -->
-<xacro:overhead_camera
-prefix="overhead"
-x="0.0"
-y="0.0"
-z="1.5"
-roll="0.0"
-pitch="-1.5708"
-yaw="0.0"
-topic="/overhead_camera/image_raw"
-/>
+    <xacro:overhead_camera
+        prefix="overhead"
+        x="0.0"
+        y="0.0"
+        z="1.5"
+        roll="0.0"
+        pitch="-1.5708"
+        yaw="0.0"
+        topic="/overhead_camera/image_raw"
+    />
 
+    <link name="world"/>
 
     <material name="Grey"><color rgba="0.5 0.5 0.5 1.0"/></material>
     <material name="Blue"><color rgba="0.0 0.0 1.0 1.0"/></material>
@@ -25,7 +25,6 @@ topic="/overhead_camera/image_raw"
     <material name="Black"><color rgba="0.0 0.0 0.0 1.0"/></material>
     <material name="White"><color rgba="1.0 1.0 1.0 1.0"/></material>
 
-    <!-- Example transmission (repeat for each joint) -->
     <transmission name="joint1_trans">
     <type>transmission_interface/SimpleTransmission</type>
     <actuator name="joint1_motor"/>
@@ -56,8 +55,6 @@ topic="/overhead_camera/image_raw"
     <joint name="link4_link5"/>
     </transmission>
 
-    <!--End effector-->
-
     <transmission name="joint6_trans">
     <type>transmission_interface/SimpleTransmission</type>
     <actuator name="joint6_motor"/>
@@ -77,18 +74,18 @@ topic="/overhead_camera/image_raw"
     </transmission>
 
     <gazebo>
-        <initial_position xyz="0 0 0"/>
-        <plugin filename="gz_ros2_control-system"
-                name="gz_ros2_control::GazeboSimROS2ControlPlugin">
-            <parameters>$(find robot_description)/config/controllers.yaml</parameters>
+        <plugin filename="ign_ros2_control-system"
+                name="ign_ros2_control::IgnitionROS2ControlPlugin">
+            <parameters>$(find robot_description)/robot_description/config/controllers.yaml</parameters>
         </plugin>
     </gazebo>
 
 
 
+
     <ros2_control name="IgnitionSystem" type="system">
         <hardware>
-            <plugin>gz_ros2_control/GazeboSimSystem</plugin>
+            <plugin>ign_ros2_control/IgnitionSystem</plugin>
         </hardware>
 
         <joint name="base_link_link1">
@@ -114,6 +111,7 @@ topic="/overhead_camera/image_raw"
                 <param name="min">-1.57</param>
                 <param name="max">1.57</param>
             </command_interface>
+            
             <state_interface name="position"/>
             <state_interface name="velocity"/>
            
@@ -122,7 +120,8 @@ topic="/overhead_camera/image_raw"
             <command_interface name="position">
                 <param name="min">-1.57</param>
                 <param name="max">1.57</param>
-            </command_interface>
+           
+             </command_interface>
             <state_interface name="position"/>
             <state_interface name="velocity"/>
             
@@ -138,6 +137,7 @@ topic="/overhead_camera/image_raw"
         </joint>
         <joint name="link5_tcp_connector">
              <command_interface name="position">
+                
                 <param name="min">-1.57</param>
                 <param name="max">1.57</param>
             </command_interface>
@@ -146,6 +146,7 @@ topic="/overhead_camera/image_raw"
              
         </joint>
         <joint name="tcp_connector_gripper_right">
+            
             <command_interface name="position">
                 <param name="min">0.0</param>
                 <param name="max">0.055</param>
@@ -154,7 +155,8 @@ topic="/overhead_camera/image_raw"
             <state_interface name="velocity"/>
             
         </joint>
-        <joint name="tcp_connector_gripper_left">
+       
+         <joint name="tcp_connector_gripper_left">
             <command_interface name="position">
                 <param name="min">-0.055</param>
                 <param name="max">0.0</param>
@@ -162,17 +164,17 @@ topic="/overhead_camera/image_raw"
             <state_interface name="position"/>
             <state_interface name="velocity"/>
             
+ 
         </joint>
     </ros2_control>
 
-    <!-- Links -->
     <link name="base_link">
         <visual>
             <origin xyz="0.0 0.0 0.025" rpy="0.0 0.0 0.0"/>
             <geometry>
                 <cylinder radius="0.1" length="0.05"/>
             </geometry>
-            <material name="Grey"/>
+             <material name="Grey"/>
         </visual>
         <collision>
             <origin xyz="0.0 0.0 0.025" rpy="0.0 0.0 0.0"/>
@@ -181,9 +183,8 @@ topic="/overhead_camera/image_raw"
             </geometry>
         </collision>
         <inertial>
-            <origin xyz="0 0 0" rpy="0 0 0"/>
+             <origin xyz="0 0 0" rpy="0 0 0"/>
             <mass value="5.0"/>
-            <!-- cylinder inertia (r=0.1, L=0.05) -->
             <inertia ixx="0.013542" ixy="0.0" ixz="0.0" iyy="0.013542" iyz="0.0" izz="0.025000"/>
         </inertial>
     </link>
@@ -198,14 +199,13 @@ topic="/overhead_camera/image_raw"
         </visual>
         <collision>
             <origin xyz="0.0 0.0 0.132" rpy="0.0 0.0 0.0"/>
-            <geometry>
+             <geometry>
                 <cylinder radius="0.05" length="0.264"/>
             </geometry>
         </collision>
         <inertial>
             <origin xyz="0 0 0" rpy="0 0 0"/>
             <mass value="2.0"/>
-            <!-- cylinder inertia (r=0.05, L=0.264) -->
             <inertia ixx="0.012866" ixy="0.0" ixz="0.0" iyy="0.012866" iyz="0.0" izz="0.002500"/>
         </inertial>
     </link>
@@ -218,6 +218,7 @@ topic="/overhead_camera/image_raw"
         <limit lower="-3.14159" upper="3.14159" effort="50.0" velocity="1000.0"/>  
     </joint>
 
+    
     <link name="link_2">
         <visual>
             <origin xyz="0.0 0.0 0.425" rpy="0.0 0.0 0.0"/>
@@ -227,15 +228,16 @@ topic="/overhead_camera/image_raw"
             <material name="Green"/>
         </visual>
         <collision>
-            <origin xyz="0.0 0.0 0.425" rpy="0.0 0.0 0.0"/>
+  
+           <origin xyz="0.0 0.0 0.425" rpy="0.0 0.0 0.0"/>
             <geometry>
                 <cylinder radius="0.05" length="0.850"/>
             </geometry>
         </collision>
         <inertial>
             <origin xyz="0 0 0" rpy="0 0 0"/>
-            <mass value="3.0"/>
-            <!-- cylinder inertia (r=0.05, L=0.85) -->
+        
+             <mass value="3.0"/>
             <inertia ixx="0.182500" ixy="0.0" ixz="0.0" iyy="0.182500" iyz="0.0" izz="0.003750"/>
         </inertial>
     </link>
@@ -254,7 +256,8 @@ topic="/overhead_camera/image_raw"
             <geometry>
                 <cylinder radius="0.05" length="0.680"/>
             </geometry>
-            <material name="Red"/>
+      
+             <material name="Red"/>
         </visual>
         <collision>
             <origin xyz="0.0 0.0 0.340" rpy="0.0 0.0 0.0"/>
@@ -263,15 +266,16 @@ topic="/overhead_camera/image_raw"
             </geometry>
         </collision>
         <inertial>
-            <origin xyz="0 0 0" rpy="0 0 0"/>
+ 
+           <origin xyz="0 0 0" rpy="0 0 0"/>
             <mass value="2.5"/>
-            <!-- cylinder inertia (r=0.05, L=0.68) -->
             <inertia ixx="0.097896" ixy="0.0" ixz="0.0" iyy="0.097896" iyz="0.0" izz="0.003125"/>
         </inertial>
     </link>
 
     <joint name="link2_link3" type="revolute">
         <parent link="link_2"/>
+        
         <child link="link_3"/>
         <origin xyz="0.0 -0.1 0.8" rpy="0 0 0"/>
         <axis xyz="0 1 0"/>
@@ -282,7 +286,8 @@ topic="/overhead_camera/image_raw"
         <visual>
             <origin xyz="0.0 0.0 0.065" rpy="0.0 0.0 0.0"/>
             <geometry>
-                <cylinder radius="0.05" length="0.130"/>
+               
+                 <cylinder radius="0.05" length="0.130"/>
             </geometry>
             <material name="Yellow"/>
         </visual>
@@ -290,17 +295,18 @@ topic="/overhead_camera/image_raw"
             <origin xyz="0.0 0.0 0.065" rpy="0.0 0.0 0.0"/>
             <geometry>
                 <cylinder radius="0.05" length="0.130"/>
-            </geometry>
+        
+             </geometry>
         </collision>
         <inertial>
             <origin xyz="0 0 0" rpy="0 0 0"/>
             <mass value="1.5"/>
-            <!-- cylinder inertia (r=0.05, L=0.13) -->
             <inertia ixx="0.003050" ixy="0.0" ixz="0.0" iyy="0.003050" iyz="0.0" izz="0.001875"/>
         </inertial>
     </link>
 
-    <joint name="link3_link4" type="revolute">
+  
+     <joint name="link3_link4" type="revolute">
         <parent link="link_3"/>
         <child link="link_4"/>
         <origin xyz="0.0 0.1 0.630" rpy="0 0 0"/>
@@ -311,7 +317,8 @@ topic="/overhead_camera/image_raw"
     <link name="link_5">
         <visual>
             <origin xyz="0.0 0.0 0.035" rpy="0.0 0.0 0.0"/>
-            <geometry>
+      
+             <geometry>
                 <cylinder radius="0.05" length="0.170"/>
             </geometry>
             <material name="Cyan"/>
@@ -319,13 +326,13 @@ topic="/overhead_camera/image_raw"
         <collision>
             <origin xyz="0.0 0.0 0.035" rpy="0.0 0.0 0.0"/>
             <geometry>
-                <cylinder radius="0.05" length="0.170"/>
+     
+                 <cylinder radius="0.05" length="0.170"/>
             </geometry>
         </collision>
         <inertial>
             <origin xyz="0 0 0" rpy="0 0 0"/>
             <mass value="1.0"/>
-            <!-- cylinder inertia (r=0.05, L=0.17) -->
             <inertia ixx="0.003033" ixy="0.0" ixz="0.0" iyy="0.003033" iyz="0.0" izz="0.001250"/>
         </inertial>
     </link>
@@ -336,9 +343,9 @@ topic="/overhead_camera/image_raw"
         <axis xyz="1 0 0"/>
         <limit lower="-3.14" upper="3.14" effort="50.0" velocity="1000.0"/>
     </joint>
-    <!--build the TCP or end effector-->
     <link name="tcp_connector">
-        <visual>
+  
+       <visual>
             <origin xyz="0.0 0.0 0.0125" rpy="0.0 0.0 0.0"/>
             <geometry>
                 <box size="0.03 0.150 0.03"/>
@@ -346,15 +353,16 @@ topic="/overhead_camera/image_raw"
             <material name="White"/>
         </visual>
         <collision>
-            <origin xyz="0.0 0.0 0.0125" rpy="0.0 0.0 0.0"/>
+    
+             <origin xyz="0.0 0.0 0.0125" rpy="0.0 0.0 0.0"/>
             <geometry>
                 <box size="0.03 0.150 0.03"/>
             </geometry>
         </collision>
         <inertial>
             <origin xyz="0 0 0" rpy="0 0 0"/>
-            <mass value="0.5"/>
-            <!-- box inertia (0.03 x 0.15 x 0.03) -->
+         
+             <mass value="0.5"/>
             <inertia ixx="0.000975" ixy="0.0" ixz="0.0" iyy="0.000075" iyz="0.0" izz="0.000975"/>
         </inertial>
     </link>
@@ -362,6 +370,7 @@ topic="/overhead_camera/image_raw"
         <parent link="link_5"/>
         <child link="tcp_connector"/>
         <origin xyz="0.0 0.0 0.120" rpy="0 0 0"/>
+        
         <axis xyz="0 0 1"/>
         <limit lower="-3.14" upper="3.14" effort="50.0" velocity="1000.0"/>
     </joint>
@@ -372,7 +381,8 @@ topic="/overhead_camera/image_raw"
             <geometry>
                 <box size="0.01 0.01 0.1"/>
             </geometry>
-            <material name="Black"/>
+       
+             <material name="Black"/>
         </visual>
         <collision>
             <origin xyz="0.0 0.0 0.05" rpy="0.0 0.0 0.0"/>
@@ -381,16 +391,17 @@ topic="/overhead_camera/image_raw"
             </geometry>
         </collision>
         <inertial>
-            <origin xyz="0 0 0" rpy="0 0 0"/>
+ 
+           <origin xyz="0 0 0" rpy="0 0 0"/>
             <mass value="0.2"/>
-            <!-- box inertia (0.01 x 0.01 x 0.1) -->
             <inertia ixx="0.000168" ixy="0.0" ixz="0.0" iyy="0.000168" iyz="0.0" izz="0.000003"/>
         </inertial>
     </link>
 
     <joint name="tcp_connector_gripper_right" type="prismatic">
         <parent link="tcp_connector"/>
-        <child link="gripper_right"/>
+     
+         <child link="gripper_right"/>
         <origin xyz="0.0 -0.065 0.03" rpy="0 0 0"/>
         <axis xyz="0 1 0"/>
         <limit lower="0.0" upper="0.055" effort="50.0" velocity="1000.0"/>
@@ -400,7 +411,8 @@ topic="/overhead_camera/image_raw"
         <visual>
             <origin xyz="0.0 0.0 0.05" rpy="0.0 0.0 0.0"/>
             <geometry>
-                <box size="0.01 0.01 0.1"/>
+            
+                 <box size="0.01 0.01 0.1"/>
             </geometry>
             <material name="Black"/>
         </visual>
@@ -408,7 +420,8 @@ topic="/overhead_camera/image_raw"
             <origin xyz="0.0 0.0 0.05" rpy="0.0 0.0 0.0"/>
             <geometry>
                 <box size="0.01 0.01 0.1"/>
-            </geometry>
+   
+             </geometry>
         </collision>
         <inertial>
             <origin xyz="0 0 0" rpy="0 0 0"/>
@@ -418,6 +431,7 @@ topic="/overhead_camera/image_raw"
     </link>
 
     <joint name="tcp_connector_gripper_left" type="prismatic">
+        
         <parent link="tcp_connector"/>
         <child link="gripper_left"/>
         <origin xyz="0.0 0.065 0.03" rpy="0 0 0"/>
@@ -425,8 +439,6 @@ topic="/overhead_camera/image_raw"
         <limit lower="-0.055" upper="0.0" effort="50.0" velocity="1000.0"/>
     </joint>
     
-    <link name="world"/>
-
     <joint name="fixed_base_joint" type="fixed">
         <parent link="world"/>
         <child link="base_link"/>

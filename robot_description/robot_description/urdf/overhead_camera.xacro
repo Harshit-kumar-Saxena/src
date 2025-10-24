@@ -7,18 +7,16 @@
         x='0.0' y='-1.2' z='1.2'
         roll='0.0' pitch='-1.5708' yaw='0.0'
         fov='1.0472' width='1280' height='720' update_rate='30'
-        topic='/overhead_cam' ">
-
-    <!-- Base link attached to world -->
+        topic='/overhead_camera/image_raw' "> 
+        
     <link name="${prefix}_base_link"/>
 
     <joint name="${prefix}_fixed_joint" type="fixed">
-      <parent link="world"/>
+      <parent link="tcp_connector"/>
       <child  link="${prefix}_base_link"/>
       <origin xyz="${x} ${y} ${z}" rpy="${roll} ${pitch} ${yaw}"/>
     </joint>
 
-    <!-- Camera link -->
     <link name="${prefix}_camera_link"/>
     <joint name="${prefix}_camera_joint" type="fixed">
       <parent link="${prefix}_base_link"/>
@@ -26,9 +24,15 @@
       <origin xyz="0 0 0" rpy="0 0 0"/>
     </joint>
 
-    <!-- Gazebo camera sensor -->
+    <gazebo>
+      <plugin name='gz::sim::systems::Sensors' filename='gz-sim-sensors-system'>
+          <render_engine>ogre2</render_engine>
+      </plugin>
+    </gazebo>
+
+
     <gazebo reference="${prefix}_camera_link">
-      <sensor name="${prefix}_camera_sensor" type="camera">
+      <sensor name="${prefix}_camera" type="camera">
         <pose>0 0 0 0 0 0</pose>
         <camera>
           <horizontal_fov>${fov}</horizontal_fov>
@@ -41,12 +45,20 @@
             <near>0.01</near>
             <far>10</far>
           </clip>
+          <optical_frame_id>${prefix}_camera_link</optical_frame_id>
+          <camera_info_topic>/overhead_camera/camera_info</camera_info_topic>
         </camera>
-        <always_on>true</always_on>
+        <always_on>1</always_on>
         <update_rate>${update_rate}</update_rate>
         <visualize>true</visualize>
+        <topic>${topic}</topic>
       </sensor>
     </gazebo>
+
+
+    
+
+    
 
   </xacro:macro>
 
