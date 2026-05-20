@@ -13,6 +13,8 @@ setup(
         ('share/' + package_name + '/robot_description/urdf', glob('robot_description/urdf/*.xacro')),
         ('share/' + package_name + '/robot_description/config', glob('robot_description/config/*.yaml')),
         ('share/' + package_name + '/launch', glob('launch/*.py')),
+        # --- ADD THIS LINE ---
+        ('share/' + package_name + '/world', glob('robot_description/world/*.sdf')),
     ],
     install_requires=['setuptools'],
     zip_safe=True,
